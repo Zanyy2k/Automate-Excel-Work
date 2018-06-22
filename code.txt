@@ -1,0 +1,68 @@
+Sub CopyOpenItems()
+'
+' CopyOpenItems Macro
+' Copy open items to sheet.
+'
+' Keyboard Shortcut: Ctrl+Shift+O
+'
+Dim wbTarget As Workbook 'workbook where the data is to be pasted
+Dim wbThis As Workbook 'workbook from where the data is to be copied
+Dim strName As String 'name of the source sheet/ target workbook
+Dim cell As Range, cRange As Range
+
+'set to the current active workbook (the source book)
+Set wbThis = ActiveWorkbook
+
+'get the active sheetname of the book
+strName = ActiveSheet.Name
+
+'open a workbook that has same name as the sheet name
+Set wbTarget = Workbooks.Open("C:\Users\zyu\Desktop\excel\Targetfile.xlsx")
+
+' selet the targetTab
+Set targetTab = wbTarget.Worksheets("iData")
+
+'activate the source book
+wbThis.Activate
+
+'clear any thing on clipboard to maximize available memory
+Application.CutCopyMode = False
+
+' selet the targetTab
+Set sourceTab = wbThis.Worksheets("Raw Data")
+
+'copy the range from source book
+' sourceTab.Range("A1:B20").Copy
+i = 6
+For Each cell In sourceTab.Range("D1:D20")
+    If cell.Value > 0 Then
+        targetTab.Range("A" & i).Value = _
+            cell.Value
+        i = i + 1
+    End If
+Next cell
+
+
+'paste the data on the target book
+'targetTab.Range("A1").PasteSpecial xlPasteValues
+
+'clear any thing on clipboard to maximize available memory
+' Application.CutCopyMode = False
+
+'save the target book
+' wbTarget.Save
+
+'close the workbook
+' wbTarget.Close
+
+'activate the source book again
+' wbThis.Activate
+
+'clear memory
+' Set wbTarget = Nothing
+' Set wbThis = Nothing
+
+'''''Process Completed
+MsgBox "Task Completed"
+
+End Sub
